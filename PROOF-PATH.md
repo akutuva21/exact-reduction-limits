@@ -135,3 +135,44 @@ buried inside an opaque undecidability declaration.
 `PaperTheorems.lean` exports stable aliases corresponding to the paper numbering.
 `PAPER-COVERAGE.md` records which parts are internally proved and which terminate
 at an explicit classical interface.
+
+## J. Constructive reduction diagnostics
+
+`TaskSufficiency.lean` fixes the prediction problem before judging a state
+representation.  `PredictionTask` records the relevant restart set, present
+assay, and exact future law.  `FutureCounterexample` and
+`CurrentCounterexample` are proof-carrying state-pair witnesses.
+
+`ReductionDiagnostics.lean` specializes the same idea to rule semantics.
+`MacroCounterexample` stores two merged microscopic states and a target
+macrostate for which their aggregate hazards differ.  Lean proves
+`macroClosed_iff_no_counterexample`, making the witness contract exact rather
+than heuristic.
+
+`CoordinateRepair.lean` formalizes counterexample-guided state discovery.  A
+candidate coordinate repairs a known collision only when it separates the
+witness pair; repairing one witness is deliberately not promoted to a global
+exactness theorem.
+
+## K. Approximation and sound incompleteness
+
+`ApproximateReduction.lean` introduces explicit `epsilon` budgets for both
+future-law distance and aggregate-rate discrepancy.  Exactness implies every
+nonnegative tolerance, larger tolerances are monotone, over-budget pairs refute
+a certificate, and zero aggregate-rate tolerance recovers exact macro closure.
+
+`Certification.lean` encodes the operational consequence of the paper's
+undecidability result: practical analyzers should return proof-carrying
+`certified`, concrete `counterexample`, or `unknown`.  A `DomainCertificate`
+separates "closed on the searched set" from "closed on every relevant state".
+
+## L. Scanner as a state-discovery example
+
+`ScannerDiagnostics.lean` turns the negative locality theorem into a repair
+example.  It defines the complete scanner survival curve as the protected future
+law, constructs a future-law counterexample for every finite local family, and
+proves that the nonlocal `remaining` coordinate determines the complete curve.
+Thus the same model demonstrates both failure and a mathematically sufficient
+repair.
+
+`PracticalTheorems.lean` exports stable wrappers for this constructive layer.

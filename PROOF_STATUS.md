@@ -39,6 +39,15 @@ local kernel-build claim is made.  CI is included to perform (3).
 | Seed-reduction promise certificate and transfer | `Undecidability.lean` | Lean source |
 | Reusable-reduction promise certificate and transfer | `Undecidability.lean` | Lean source |
 | Reusable reduction global max-rate bound | `Undecidability.lean` | Lean source |
+| Task-relative predictive sufficiency | `TaskSufficiency.lean` | Lean source |
+| Current/future counterexample refutation | `TaskSufficiency.lean` | Lean source |
+| Macro-rate counterexample equivalence | `ReductionDiagnostics.lean` | Lean source |
+| Complete-domain closure transfer | `ReductionDiagnostics.lean` | Lean source |
+| Counterexample-guided coordinate separation | `CoordinateRepair.lean` | Lean source |
+| Metric future-law epsilon sufficiency | `ApproximateReduction.lean` | Lean source |
+| Aggregate-rate epsilon closure and zero-error theorem | `ApproximateReduction.lean` | Lean source |
+| Proof-carrying three-way certification API | `Certification.lean` | Lean source |
+| Scanner local-family diagnostic and remaining-coordinate repair | `ScannerDiagnostics.lean` | Lean source |
 
 ## Explicit background interfaces
 
@@ -105,4 +114,8 @@ check the new logical architecture of this paper.
 `PAPER-COVERAGE.md` has a corresponding Lean symbol or explicit interface
 marker.
 
-GitHub Actions runs both checks and then the pinned Lean/Mathlib build.
+`tools/check_practical.py` checks that the constructive extension contains the
+task, witness, repair, approximation, certification, and scanner-example
+interfaces described in `PRACTICAL-FRAMEWORK.md`.
+
+GitHub Actions runs all three checks and then the pinned Lean/Mathlib build.

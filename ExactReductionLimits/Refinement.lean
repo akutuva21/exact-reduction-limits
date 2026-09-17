@@ -21,13 +21,11 @@ def scannerLabel (n r : ℕ) : ℕ := if r ≤ n then r else n + 1
 theorem finite_stage_still_merges (n : ℕ) :
     scannerLabel n (n + 1) = scannerLabel n (n + 2) := by
   simp [scannerLabel]
-  omega
 
 /-- The very next refinement round splits those two distances. -/
 theorem next_stage_splits (n : ℕ) :
     scannerLabel (n + 1) (n + 1) ≠ scannerLabel (n + 1) (n + 2) := by
   simp [scannerLabel]
-  omega
 
 /-- No finite refinement depth is stable on all scanner distances. -/
 theorem no_finite_stage_is_final (n : ℕ) :

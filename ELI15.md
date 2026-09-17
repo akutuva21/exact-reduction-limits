@@ -189,3 +189,39 @@ The repository makes those quantifiers and implications explicit.  It also
 makes the trust boundary explicit: paper-specific arguments are Lean proofs;
 large classical theorems reused from queueing, probability, and computability
 are typed inputs until separately formalized.
+
+## 9. What the expanded project enables
+
+The impossibility theorem is now treated as a boundary, not as the practical
+endpoint.  The new Lean layer asks a model-specific question: if two microscopic
+states receive the same proposed reduced-state label, do they really have the
+same present assay and future behavior for the task we care about?
+
+If not, the reduction should fail with an explicit pair of states.  At the rule
+level it can fail with an even sharper witness: one target macrostate has a
+different aggregate transition hazard from the two supposedly equivalent source
+states.
+
+A candidate missing coordinate earns the word "explanation" only if it actually
+separates that failed pair.  Adding it removes the known collision, but the tool
+must search again because another collision may exist.  This is
+counterexample-guided state discovery rather than automatic biological
+storytelling.
+
+The scanner now demonstrates the whole idea.  Finite local patterns produce a
+future-law counterexample.  `remaining distance` separates that pair and, more
+strongly, determines the entire survival curve for every scanner restart.
+
+Because exact equality is often unrealistic in biology, the extension also
+introduces an explicit `epsilon` tolerance.  `epsilon = 0` is exactness; positive
+`epsilon` is approximation and is never silently relabeled as exact.
+
+Finally, the undecidability result motivates a truthful software API:
+
+```text
+certified      proof that the requested reduction works
+counterexample explicit proof that it fails
+unknown        neither conclusion was established
+```
+
+That is the practical interpretation of the project.

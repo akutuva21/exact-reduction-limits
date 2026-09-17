@@ -23,5 +23,12 @@ globs = [
   "ExactReductionLimits.Refinement",
   "ExactReductionLimits.ClassicalInterfaces",
   "ExactReductionLimits.Undecidability",
-  "ExactReductionLimits.PaperTheorems"
+  "ExactReductionLimits.PaperTheorems",
+  "ExactReductionLimits.TaskSufficiency",
+  "ExactReductionLimits.ReductionDiagnostics",
+  "ExactReductionLimits.CoordinateRepair",
+  "ExactReductionLimits.ApproximateReduction",
+  "ExactReductionLimits.Certification",
+  "ExactReductionLimits.ScannerDiagnostics",
+  "ExactReductionLimits.PracticalTheorems"
 ]

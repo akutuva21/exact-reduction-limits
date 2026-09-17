@@ -37,7 +37,9 @@ def Deep (R : ℕ) (x : State) : Prop := R < x.left ∧ R < x.right
 /-- Increasing the demanded depth only makes the predicate stronger. -/
 theorem deep_mono {r R : ℕ} {x : State} (hrR : r ≤ R) (h : Deep R x) :
     Deep r x := by
-  constructor <;> omega
+  constructor
+  · exact lt_of_le_of_lt hrR h.1
+  · exact lt_of_le_of_lt hrR h.2
 
 /-- Semantic interface of one ordinary finite local site-graph observable. -/
 structure LocalObservable where
@@ -93,7 +95,7 @@ theorem finite_local_family_cannot_locate_deep_scanner
 /-- Erlang survival probability from a scan state with `r` rate-`κ` events left. -/
 def erlangSurvival (κ : ℝ) (r : ℕ) (t : ℝ) : ℝ :=
   Real.exp (-κ * t) *
-    ∑ j in Finset.range r, (κ * t) ^ j / (Nat.factorial j : ℝ)
+    ∑ j ∈ Finset.range r, (κ * t) ^ j / (Nat.factorial j : ℝ)
 
 /-- Successive Erlang orders differ by exactly their new highest-order term. -/
 theorem erlangSurvival_succ_sub (κ t : ℝ) (r : ℕ) :
@@ -140,17 +142,17 @@ inductive Mode where
   deriving DecidableEq, Repr
 
 /-- Total exit rate of the abstract scanner mode. -/
-def modeExitRate (λb λs κ : ℝ) : Mode → ℝ
-  | .build => λb + λs
+def modeExitRate (lb ls κ : ℝ) : Mode → ℝ
+  | .build => lb + ls
   | .scan => κ
   | .done => 0
 
 /-- Proposition 2.5: one Append plus one Freeze in build mode, or one scanner
 move in scan mode, gives the uniform bound. -/
 theorem scanner_exitRate_bound
-    (λb λs κ : ℝ) (hλb : 0 ≤ λb) (hλs : 0 ≤ λs) (hκ : 0 ≤ κ)
+    (lb ls κ : ℝ) (hlb : 0 ≤ lb) (hls : 0 ≤ ls) (hκ : 0 ≤ κ)
     (m : Mode) :
-    modeExitRate λb λs κ m ≤ λb + λs + κ := by
+    modeExitRate lb ls κ m ≤ lb + ls + κ := by
   cases m <;> simp [modeExitRate] <;> linarith
 
 /-- Coefficient of `t^j` after removing the common factor `exp(-κt)` from an
@@ -162,17 +164,17 @@ def erlangCoeff (κ : ℝ) (r j : ℕ) : ℝ :=
 def CoeffCombinationVanishes
     (κ : ℝ) (N : ℕ) (c : ℕ → ℝ) : Prop :=
   ∀ j, j < N →
-    ∑ r in Finset.range N, c r * erlangCoeff κ (r + 1) j = 0
+    ∑ r ∈ Finset.range N, c r * erlangCoeff κ (r + 1) j = 0
 
 /-- The top coefficient in the first `N+1` Erlang orders comes only from the
 largest order. -/
 theorem top_erlang_coefficient
     (κ : ℝ) (N : ℕ) (c : ℕ → ℝ) :
-    (∑ r in Finset.range (N + 1), c r * erlangCoeff κ (r + 1) N) =
+    (∑ r ∈ Finset.range (N + 1), c r * erlangCoeff κ (r + 1) N) =
       c N * (κ ^ N / (Nat.factorial N : ℝ)) := by
   rw [Finset.sum_range_succ]
   have hzero :
-      (∑ r in Finset.range N, c r * erlangCoeff κ (r + 1) N) = 0 := by
+      (∑ r ∈ Finset.range N, c r * erlangCoeff κ (r + 1) N) = 0 := by
     apply Finset.sum_eq_zero
     intro b hb
     have hb' : b < N := Finset.mem_range.mp hb
@@ -207,13 +209,12 @@ theorem erlang_coefficients_linearly_independent
       by_cases hrN : r = N
       · simpa [hrN] using hcN
       · have hrlt : r < N := by omega
-        apply ih c
-        · intro j hj
+        have hvanish : CoeffCombinationVanishes κ N c := by
+          intro j hj
           have hfull := h j (lt_trans hj (Nat.lt_succ_self N))
           rw [Finset.sum_range_succ] at hfull
           simpa [hcN] using hfull
-        · exact r
-        · exact hrlt
+        exact ih c hvanish r hrlt
 
 
 /-- A nontrivial finite dependence among an initial segment of a sequence of
@@ -221,7 +222,7 @@ coefficient vectors. -/
 def InitialSegmentDependent (family : ℕ → ℕ → ℝ) : Prop :=
   ∃ N : ℕ, ∃ c : ℕ → ℝ,
     (∃ r, r < N ∧ c r ≠ 0) ∧
-    ∀ j, ∑ r in Finset.range N, c r * family r j = 0
+    ∀ j, ∑ r ∈ Finset.range N, c r * family r j = 0
 
 /-- Erlang coefficient vectors indexed from order one. -/
 def erlangCoeffFamily (κ : ℝ) (r j : ℕ) : ℝ :=

@@ -60,15 +60,15 @@ theorem finite_local_pattern_state_undecidable
   exact undecidable_of_iff_reduction hhalt R.compile R.correctness
 
 /-- The global exit-rate bound used in the reusable reduction. -/
-def reusableReductionBound (γ σ κ λ μ : ℝ) : ℝ :=
-  max (γ + σ) (max κ (λ + μ))
+def reusableReductionBound (γ σ κ lam μ : ℝ) : ℝ :=
+  max (γ + σ) (max κ (lam + μ))
 
 /-- Every mode-specific rate is below the paper's maximum bound. -/
 theorem reusableReduction_rate_bound
-    (γ σ κ λ μ : ℝ) :
-    γ + σ ≤ reusableReductionBound γ σ κ λ μ ∧
-    κ ≤ reusableReductionBound γ σ κ λ μ ∧
-    λ + μ ≤ reusableReductionBound γ σ κ λ μ := by
+    (γ σ κ lam μ : ℝ) :
+    γ + σ ≤ reusableReductionBound γ σ κ lam μ ∧
+    κ ≤ reusableReductionBound γ σ κ lam μ ∧
+    lam + μ ≤ reusableReductionBound γ σ κ lam μ := by
   unfold reusableReductionBound
   constructor
   · exact le_max_left _ _

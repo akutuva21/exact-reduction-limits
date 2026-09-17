@@ -38,8 +38,8 @@ structure FiniteLocalStatistic (State : Type*) where
 
 /-- A statistic determines an exact future law when equal statistic values imply
 identical future laws. -/
-def DeterminesFutureLaw {State Law : Type*}
-    (phi : State → Law) (F : State → Law) : Prop :=
+def DeterminesFutureLaw {State Rep Law : Type*}
+    (phi : State → Rep) (F : State → Law) : Prop :=
   ∀ ⦃x y : State⦄, phi x = phi y → F x = F y
 
 /-- A Boolean program decides a predicate when it returns true exactly on the

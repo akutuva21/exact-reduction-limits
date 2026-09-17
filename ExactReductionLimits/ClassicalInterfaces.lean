@@ -48,15 +48,15 @@ def halfIntegerTailProfile (C eta : ℝ) (t : ℝ) : ℝ :=
 
 /-- Classical M/M/1 facts used beyond the quadratic algebra proved in
 `ReversibleTip.lean`. -/
-structure BusyPeriodBackground (λ μ : ℝ) where
-  stable : 0 < λ ∧ λ < μ
+structure BusyPeriodBackground (lam μ : ℝ) where
+  stable : 0 < lam ∧ lam < μ
   rational : LinearRealization.RationalTransformClass
-  completion_nonrational : ¬ rational.member (ReversibleTip.rho λ μ)
+  completion_nonrational : ¬ rational.member (ReversibleTip.rho lam μ)
   density : ℝ → ℝ
   eta : ℝ
   tailConstant : ℝ
   tailConstant_pos : 0 < tailConstant
-  eta_formula : eta = (Real.sqrt μ - Real.sqrt λ) ^ 2
+  eta_formula : eta = (Real.sqrt μ - Real.sqrt lam) ^ 2
   half_integer_tail :
     AsymptoticEquivalentAtTop density (halfIntegerTailProfile tailConstant eta)
   PhaseTypeLaw : Type*
@@ -68,9 +68,9 @@ structure BusyPeriodBackground (λ μ : ℝ) where
       ∀ K : ℕ, ∃ n : ℕ, K < phaseOrder (H n)
 
 /-- Classical stochastic-process bridge for the unique-tip site-graph process. -/
-structure BusyPeriodCTMCBridge (λ μ : ℝ) where
+structure BusyPeriodCTMCBridge (lam μ : ℝ) where
   completionTransform : ℝ → ℝ
-  transform_eq_rho : completionTransform = ReversibleTip.rho λ μ
+  transform_eq_rho : completionTransform = ReversibleTip.rho lam μ
   active_length_is_birth_death : Prop
   site_graph_realizable : Prop
 
@@ -81,7 +81,7 @@ structure ErlangPolynomialBridge (κ : ℝ) where
   function_dependence_implies_coeff_dependence :
     ∀ N c,
       (∀ t : ℝ,
-        ∑ r in Finset.range N,
+        ∑ r ∈ Finset.range N,
           c r * Scanner.erlangSurvival κ (r + 1) t = 0) →
       Scanner.CoeffCombinationVanishes κ N c
 

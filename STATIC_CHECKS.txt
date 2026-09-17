@@ -1,7 +1,7 @@
 Generated structural verification record
 
 PRELINT: PASS
-- 15 Lean files
+- 22 Lean files
 - every local import resolves
 - local import graph is acyclic
 - all local modules are umbrella-reachable
@@ -11,6 +11,17 @@ PRELINT: PASS
 COVERAGE: PASS
 - 23 paper result labels tracked
 - 19 proof/interface symbols present
+
+PRACTICAL CHECK: PASS
+- task-specific sufficiency layer present
+- exact counterexample diagnostics present
+- coordinate-repair contracts present
+- approximate reduction layer present
+- proof-carrying YES/NO/UNKNOWN API present
+- scanner end-to-end diagnostic example present
+
+Python tool syntax: PASS (`python3 -m py_compile tools/*.py`)
+Lakefile TOML parse: PASS
 
 Lean kernel build: NOT RUN (Lean/Lake unavailable in generation environment).
 Run: lake build

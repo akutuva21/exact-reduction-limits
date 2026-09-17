@@ -19,6 +19,25 @@ The central distinction is the same one made in the paper:
 - conversely, a one-integer exact coordinate may exist while **no finite hidden
   CTMC** reproduces the seed-level assay law.
 
+The repository now also contains a **constructive practical layer** motivated by
+those limits.  Instead of asking only whether arbitrary exact reduction is
+decidable, it formalizes the contracts a useful reduction tool should satisfy:
+
+- define sufficiency relative to an explicit restart set and prediction task;
+- return concrete state-pair counterexamples when a proposed representation
+  loses predictive information;
+- test whether a candidate added coordinate actually separates a failed pair;
+- distinguish exact from `epsilon`-approximate closure;
+- use proof-carrying `certified / counterexample / unknown` outcomes; and
+- certify a bounded search only when completeness of the searched domain is
+  independently established.
+
+The scanner is now an end-to-end constructive example: every finite local
+representation is refuted by a future-law witness, while the nonlocal
+`remaining` coordinate determines the **entire survival curve** exactly.  See
+[`PRACTICAL-FRAMEWORK.md`](PRACTICAL-FRAMEWORK.md) and
+[`ELI10-PRACTICAL.md`](ELI10-PRACTICAL.md).
+
 ## What is formalized
 
 The repository covers every numbered mathematical result in the note and the
@@ -36,7 +55,13 @@ proof-critical appendix statements.  The paper-specific core includes:
 9. finite-depth scanner refinement and separation only at the omega limit;
 10. the exact macro-event aggregate-rate criterion;
 11. the two many-one undecidability transfers, including their strengthened
-    promise fields.
+    promise fields;
+12. task-relative current/future sufficiency and explicit counterexample types;
+13. aggregate-rate witness equivalence for exact macro closure;
+14. counterexample-guided coordinate augmentation contracts;
+15. metric future-law and aggregate-rate `epsilon`-approximate reduction;
+16. complete-domain certificates and proof-carrying three-valued verdicts; and
+17. the scanner's exact repair by the nonlocal remaining-distance coordinate.
 
 The project does **not** hide imported mathematics behind `axiom`, `sorry`, or
 `admit`.  Classical facts that are background rather than contributions of the
@@ -150,6 +175,7 @@ current Rasq repository.
 ```bash
 python3 tools/prelint.py
 python3 tools/check_coverage.py
+python3 tools/check_practical.py
 lake build
 ```
 
@@ -175,7 +201,13 @@ inferring verification from file presence.
   -> status.
 - [`PROOF_STATUS.md`](PROOF_STATUS.md): what is proved internally, what is an
   explicit classical interface, and what still requires a kernel build.
-- [`ELI15.md`](ELI15.md): plain-language interpretation.
+- [`ELI15.md`](ELI15.md): plain-language interpretation of the paper.
+- [`ELI10-PRACTICAL.md`](ELI10-PRACTICAL.md): child-level explanation of the
+  constructive extension.
+- [`PRACTICAL-FRAMEWORK.md`](PRACTICAL-FRAMEWORK.md): exact contracts and the
+  intended BioNetGen-facing workflow.
+- [`CHANGES-PRACTICAL.md`](CHANGES-PRACTICAL.md): concise file-by-file summary
+  of the constructive extension.
 
 ## Repository layout
 
@@ -196,7 +228,14 @@ inferring verification from file presence.
 │   ├── Refinement.lean
 │   ├── ClassicalInterfaces.lean
 │   ├── Undecidability.lean
-│   └── PaperTheorems.lean
+│   ├── PaperTheorems.lean
+│   ├── TaskSufficiency.lean
+│   ├── ReductionDiagnostics.lean
+│   ├── CoordinateRepair.lean
+│   ├── ApproximateReduction.lean
+│   ├── Certification.lean
+│   ├── ScannerDiagnostics.lean
+│   └── PracticalTheorems.lean
 ├── models/
 │   └── README.md
 ├── paper/
@@ -206,10 +245,13 @@ inferring verification from file presence.
 │   └── README.md
 ├── tools/
 │   ├── prelint.py
-│   └── check_coverage.py
+│   ├── check_coverage.py
+│   └── check_practical.py
 ├── .github/workflows/lean.yml
 ├── README.md
 ├── ELI15.md
+├── ELI10-PRACTICAL.md
+├── PRACTICAL-FRAMEWORK.md
 ├── PROOF-PATH.md
 ├── PROOF_STATUS.md
 ├── PAPER-COVERAGE.md

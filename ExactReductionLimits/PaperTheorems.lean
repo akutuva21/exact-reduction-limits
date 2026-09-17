@@ -44,10 +44,10 @@ theorem theorem_2_2
 
 /-- Proposition 2.5. -/
 theorem proposition_2_5
-    (λb λs κ : ℝ) (hλb : 0 ≤ λb) (hλs : 0 ≤ λs) (hκ : 0 ≤ κ)
+    (lb ls κ : ℝ) (hlb : 0 ≤ lb) (hls : 0 ≤ ls) (hκ : 0 ≤ κ)
     (m : Scanner.Mode) :
-    Scanner.modeExitRate λb λs κ m ≤ λb + λs + κ :=
-  Scanner.scanner_exitRate_bound λb λs κ hλb hλs hκ m
+    Scanner.modeExitRate lb ls κ m ≤ lb + ls + κ :=
+  Scanner.scanner_exitRate_bound lb ls κ hlb hls hκ m
 
 /-- Lemma 2.6, coefficient-exact formulation. -/
 theorem lemma_2_6
@@ -72,29 +72,29 @@ theorem proposition_2_7
 
 /-- Proposition 2.8, transform-level factorization. -/
 theorem proposition_2_8
-    (λb λs κ s : ℝ)
-    (hλb : 0 ≤ λb) (hλs : 0 ≤ λs) (hκ : 0 ≤ κ)
-    (hA : s + ScannerSeed.phaseA λb λs κ ≠ 0)
-    (hB : s + ScannerSeed.phaseB λb λs κ ≠ 0)
-    (hQ : s ^ 2 + (λb + λs + κ) * s + λs * κ ≠ 0) :
-    ScannerSeed.seedTransform λb λs κ s =
+    (lb ls κ s : ℝ)
+    (hlb : 0 ≤ lb) (hls : 0 ≤ ls) (hκ : 0 ≤ κ)
+    (hA : s + ScannerSeed.phaseA lb ls κ ≠ 0)
+    (hB : s + ScannerSeed.phaseB lb ls κ ≠ 0)
+    (hQ : s ^ 2 + (lb + ls + κ) * s + ls * κ ≠ 0) :
+    ScannerSeed.seedTransform lb ls κ s =
       ScannerSeed.twoPhaseTransform
-        (ScannerSeed.phaseA λb λs κ)
-        (ScannerSeed.phaseB λb λs κ) s :=
-  ScannerSeed.seedTransform_eq_twoPhase λb λs κ s hλb hλs hκ hA hB hQ
+        (ScannerSeed.phaseA lb ls κ)
+        (ScannerSeed.phaseB lb ls κ) s :=
+  ScannerSeed.seedTransform_eq_twoPhase lb ls κ s hlb hls hκ hA hB hQ
 
 /-- Proposition 3.1. -/
 theorem proposition_3_1
-    (λ μ : ℝ) (hλ : 0 ≤ λ) (hμ : 0 ≤ μ) (m : ReversibleTip.Mode) :
-    ReversibleTip.exitRate λ μ m ≤ λ + μ :=
-  ReversibleTip.exitRate_bound λ μ hλ hμ m
+    (lam μ : ℝ) (hlam : 0 ≤ lam) (hμ : 0 ≤ μ) (m : ReversibleTip.Mode) :
+    ReversibleTip.exitRate lam μ m ≤ lam + μ :=
+  ReversibleTip.exitRate_bound lam μ hlam hμ m
 
 /-- Lemma 3.2, algebraic characteristic equation plus physical root at zero. -/
 theorem lemma_3_2_quadratic
-    (λ μ s : ℝ) (hλ : 0 < λ) (hμ : 0 ≤ μ) (hs : 0 ≤ s) :
-    λ * (ReversibleTip.rho λ μ s) ^ 2 -
-      (s + λ + μ) * ReversibleTip.rho λ μ s + μ = 0 :=
-  ReversibleTip.rho_quadratic λ μ s hλ hμ hs
+    (lam μ s : ℝ) (hlam : 0 < lam) (hμ : 0 ≤ μ) (hs : 0 ≤ s) :
+    lam * (ReversibleTip.rho lam μ s) ^ 2 -
+      (s + lam + μ) * ReversibleTip.rho lam μ s + μ = 0 :=
+  ReversibleTip.rho_quadratic lam μ s hlam hμ hs
 
 /-- Theorem 3.3 at the exact rational-transform bridge used in the
 paper. -/
@@ -153,16 +153,14 @@ theorem remark_B_2_omega {r s : ℕ}
 
 /-- Proposition B.1's countable-CTMC conclusion, with the measure-
 theoretic background supplied explicitly. -/
-theorem proposition_B_1
-    (C : ClassicalInterfaces.CountableCTMCBackground) :
-    C.omega_refinement_is_coarsest_strong_lumping :=
+def proposition_B_1
+    (C : ClassicalInterfaces.CountableCTMCBackground) : Prop :=
   C.omega_refinement_is_coarsest_strong_lumping
 
 /-- Lemma C.1's small-time expansion, supplied by the countable-CTMC background
 package. -/
-theorem lemma_C_1
-    (C : ClassicalInterfaces.CountableCTMCBackground) :
-    C.small_time_aggregate_expansion :=
+def lemma_C_1
+    (C : ClassicalInterfaces.CountableCTMCBackground) : Prop :=
   C.small_time_aggregate_expansion
 
 /-- Proposition C.2 at the finite-match generator level. -/

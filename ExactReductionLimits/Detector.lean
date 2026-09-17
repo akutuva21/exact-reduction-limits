@@ -44,9 +44,10 @@ theorem completionHazard_strict
     (κ : ℝ) (hκ : 0 < κ) {m n : ℕ} (hmn : m < n) :
     completionHazard κ m < completionHazard κ n := by
   unfold completionHazard
-  have hcast : (((m + 1 : ℕ) : ℝ)) < (((n + 1 : ℕ) : ℝ)) := by
+  have hcast : ((m + 1 : ℕ) : ℝ) < ((n + 1 : ℕ) : ℝ) := by
     exact_mod_cast Nat.succ_lt_succ hmn
-  nlinarith
+  have h1 : κ * ((m + 1 : ℕ) : ℝ) < κ * ((n + 1 : ℕ) : ℝ) := mul_lt_mul_of_pos_left hcast hκ
+  simpa using h1
 
 end Detector
 end ExactReductionLimits

@@ -23,9 +23,9 @@ def multiplicityVector (m : Multiset Species) : Species → ℕ :=
 theorem multiplicityVector_injective :
     Function.Injective (multiplicityVector : Multiset Species → Species → ℕ) := by
   intro a b h
-  apply Multiset.ext
-  intro s
-  exact congrFun h s
+  ext s
+  have hs := congrFun h s
+  simpa [multiplicityVector] using hs
 
 /-- The bounded-complex certificate, after the graph-theoretic finiteness step:
 there exists a finite-dimensional injective coordinate for the complete
