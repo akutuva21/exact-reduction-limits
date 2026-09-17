@@ -1,0 +1,16 @@
+Generated structural verification record
+
+PRELINT: PASS
+- 15 Lean files
+- every local import resolves
+- local import graph is acyclic
+- all local modules are umbrella-reachable
+- Lake globs match the source tree
+- no sorry/admit/axiom declaration
+
+COVERAGE: PASS
+- 23 paper result labels tracked
+- 19 proof/interface symbols present
+
+Lean kernel build: NOT RUN (Lean/Lake unavailable in generation environment).
+Run: lake build

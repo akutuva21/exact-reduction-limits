@@ -1,0 +1,27 @@
+name = "exact-reduction-limits"
+defaultTargets = ["ExactReductionLimits"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.31.0"
+
+[[lean_lib]]
+name = "ExactReductionLimits"
+globs = [
+  "ExactReductionLimits",
+  "ExactReductionLimits.Core",
+  "ExactReductionLimits.RuleSemantics",
+  "ExactReductionLimits.MacroCriterion",
+  "ExactReductionLimits.Scanner",
+  "ExactReductionLimits.ScannerSeed",
+  "ExactReductionLimits.ReversibleTip",
+  "ExactReductionLimits.LinearRealization",
+  "ExactReductionLimits.Detector",
+  "ExactReductionLimits.BoundedComplex",
+  "ExactReductionLimits.CounterMachine",
+  "ExactReductionLimits.Refinement",
+  "ExactReductionLimits.ClassicalInterfaces",
+  "ExactReductionLimits.Undecidability",
+  "ExactReductionLimits.PaperTheorems"
+]

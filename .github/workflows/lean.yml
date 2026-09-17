@@ -1,0 +1,38 @@
+name: Lean paper checks
+
+on:
+  push:
+    paths:
+      - '**.lean'
+      - '*.md'
+      - 'lakefile.toml'
+      - 'lake-manifest.json'
+      - 'lean-toolchain'
+      - 'tools/**'
+      - '.github/workflows/lean.yml'
+  pull_request:
+    paths:
+      - '**.lean'
+      - '*.md'
+      - 'lakefile.toml'
+      - 'lake-manifest.json'
+      - 'lean-toolchain'
+      - 'tools/**'
+      - '.github/workflows/lean.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Structural pre-lint
+        run: python3 tools/prelint.py
+
+      - name: Paper coverage check
+        run: python3 tools/check_coverage.py
+
+      - name: Build with pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: true

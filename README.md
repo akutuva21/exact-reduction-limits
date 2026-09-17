@@ -1,0 +1,226 @@
+# Exact reduction limits for Kappa/BNGL in Lean
+
+This repository uses Lean 4 to formalize the mathematical architecture of the
+research note **Local Rules Can Require Nonlocal Coordinates and Infinite-State
+Realizations: Limits of exact reduction in Kappa/BNGL**.
+
+It follows the organization and proof-engineering style of
+[`akutuva21/Rasq`](https://github.com/akutuva21/Rasq): a small umbrella target,
+modular theorem files, a paper-to-proof map, an explicit proof-status boundary,
+an ELI15 explanation, cheap structural checks, and a pinned Lean/Mathlib CI
+build.
+
+The central distinction is the same one made in the paper:
+
+- a **finite local coordinate** may fail even when one nonlocal integer is an
+  exact state;
+- a **finite hidden-state realization from one seed** may exist even when no
+  reusable finite local coordinate works for all restart states;
+- conversely, a one-integer exact coordinate may exist while **no finite hidden
+  CTMC** reproduces the seed-level assay law.
+
+## What is formalized
+
+The repository covers every numbered mathematical result in the note and the
+proof-critical appendix statements.  The paper-specific core includes:
+
+1. the processive-scanner locality obstruction;
+2. exact Erlang survival separation and coefficient independence;
+3. the scanner's uniform exit-rate bound;
+4. the scanner-seed recurrence and exact two-phase transform factorization;
+5. the reversible-tip characteristic quadratic and physical busy-period root;
+6. the finite-linear/rational-transform contradiction schema;
+7. finite species-count injectivity under bounded connected species;
+8. deterministic two-counter INC/JZDEC semantics and the exact free-site zero
+   test;
+9. finite-depth scanner refinement and separation only at the omega limit;
+10. the exact macro-event aggregate-rate criterion;
+11. the two many-one undecidability transfers, including their strengthened
+    promise fields.
+
+The project does **not** hide imported mathematics behind `axiom`, `sorry`, or
+`admit`.  Classical facts that are background rather than contributions of the
+paper are represented as explicit typed interfaces in
+`ExactReductionLimits/ClassicalInterfaces.lean`.  This includes the full
+measure-theoretic construction of countable CTMCs, the Takacs M/M/1 busy-period
+non-rationality theorem, Bessel tail asymptotics, phase-type density/compactness,
+finite matrix-exponential rationality, CM2 halting undecidability, and the full
+Kappa/BNGL parser/site-graph embedding bridge.
+
+That boundary matters.  The Lean development kernel-checks the implications of
+those inputs and proves the paper-specific algebra, combinatorics, and reduction
+logic.  It does not pretend to have re-formalized entire external literatures.
+See [`PROOF_STATUS.md`](PROOF_STATUS.md).
+
+## Headline proof architecture
+
+### Scanner: local syntax can miss an exact predictive coordinate
+
+A scanner state records distances to the two ends of a homogeneous chain.  A
+finite local observable has a bounded inspection radius.  Two deep positions on
+the same chain can therefore have the same finite local observable vector while
+having different remaining distances.
+
+The Done-time survival law at remaining distance `r` is
+
+\[
+S_r(t)=e^{-\kappa t}\sum_{j=0}^{r-1}\frac{(\kappa t)^j}{j!}.
+\]
+
+Lean proves that consecutive orders differ by a strictly positive term for
+`κ,t>0`, so the two locally indistinguishable restart states have different
+future assay marginals.
+
+### Scanner seed: reusable reduction and one-seed realization differ
+
+From the designated build/freeze seed, first-event conditioning gives the
+bounded recurrence
+
+\[
+F_n=uF_{n+1}+vw^n,
+\qquad
+F_n=\frac{vw^n}{1-uw}.
+\]
+
+At `n=1`, Lean simplifies this to
+
+\[
+\mathbb E[e^{-sT}]
+=\frac{\lambda_s\kappa}
+{s^2+(\lambda_b+\lambda_s+\kappa)s+\lambda_s\kappa}
+\]
+
+and proves that the denominator factors into two positive phase rates under the
+physical rate assumptions.  This is the transform-level core of the exact
+three-state hidden CTMC realization.
+
+### Reversible tip: finite coordinate dimension is not finite state cardinality
+
+The unique active tip gives the birth-death length process
+
+\[
+r\to r+1\text{ at }\lambda,
+\qquad
+r\to r-1\text{ at }\mu,
+\]
+
+with `μ>λ`.  Lean proves that the paper's candidate transform
+
+\[
+\rho(s)=\frac{s+\lambda+\mu-
+\sqrt{(s+\lambda+\mu)^2-4\lambda\mu}}{2\lambda}
+\]
+
+satisfies the characteristic quadratic and has `ρ(0)=1`.  The classical fact
+that this square-root transform is non-rational is an explicit background
+input.  The repository then proves the exact logical implication: because every
+finite-dimensional time-homogeneous linear realization has rational Laplace
+transform, no such realization can reproduce the assay.
+
+### Positive frontier: bounded connected species
+
+After the standard graph-enumeration fact that a finite signature plus a uniform
+complex-size bound yields only finitely many connected species types, Lean proves
+that a mixture is injectively represented by its species multiplicity vector.
+Copy numbers can remain unbounded, so finite coordinate dimension is kept
+separate from finite state cardinality.
+
+### Undecidability
+
+The counter module formalizes the exact computational invariant used by the
+paper: a rooted chain represents a nonnegative counter and the root is free iff
+the counter is zero.  INC and JZDEC select exactly one local rule variant.
+
+The final undecidability module proves generic many-one transfer theorems for:
+
+- `Seed-Finite-Hidden-CTMC`; and
+- `Finite-Local-Pattern-State`.
+
+The concrete Kappa compilation and the classical CM2 halting theorem are
+explicit inputs.  The reduction structures also require the paper's stronger
+promises: assay-relevant infinitude/countably infinite strong quotients, the NO
+branch finite-dimensional marginal obstruction, and the uniform exit-rate bound
+for the reusable reduction.
+
+## Build
+
+The project is pinned to Lean **4.31.0** and Mathlib **v4.31.0**, matching the
+current Rasq repository.
+
+```bash
+python3 tools/prelint.py
+python3 tools/check_coverage.py
+lake build
+```
+
+The first two commands are cheap structural checks.  Only `lake build` is a Lean
+kernel check.
+
+## Verification status
+
+This generated repository was structurally checked in the creation environment,
+but that environment did not contain a Lean/Lake executable and could not fetch
+one from the network.  Therefore this artifact does **not** claim a completed
+local kernel build.  The included GitHub Actions workflow performs the pinned
+Mathlib build with `leanprover/lean-action@v1`.
+
+See [`PROOF_STATUS.md`](PROOF_STATUS.md) for the exact boundary rather than
+inferring verification from file presence.
+
+## Proof maps
+
+- [`PROOF-PATH.md`](PROOF-PATH.md): dependency path from semantic primitives to
+  each headline theorem.
+- [`PAPER-COVERAGE.md`](PAPER-COVERAGE.md): paper statement -> Lean declaration
+  -> status.
+- [`PROOF_STATUS.md`](PROOF_STATUS.md): what is proved internally, what is an
+  explicit classical interface, and what still requires a kernel build.
+- [`ELI15.md`](ELI15.md): plain-language interpretation.
+
+## Repository layout
+
+```text
+.
+├── ExactReductionLimits.lean
+├── ExactReductionLimits/
+│   ├── Core.lean
+│   ├── RuleSemantics.lean
+│   ├── MacroCriterion.lean
+│   ├── Scanner.lean
+│   ├── ScannerSeed.lean
+│   ├── ReversibleTip.lean
+│   ├── LinearRealization.lean
+│   ├── Detector.lean
+│   ├── BoundedComplex.lean
+│   ├── CounterMachine.lean
+│   ├── Refinement.lean
+│   ├── ClassicalInterfaces.lean
+│   ├── Undecidability.lean
+│   └── PaperTheorems.lean
+├── models/
+│   └── README.md
+├── paper/
+│   ├── limits_exact_state_reduction_kappa_bngl_v9.pdf
+│   ├── limits_exact_state_reduction_kappa_bngl_practical.pdf
+│   ├── SHA256SUMS
+│   └── README.md
+├── tools/
+│   ├── prelint.py
+│   └── check_coverage.py
+├── .github/workflows/lean.yml
+├── README.md
+├── ELI15.md
+├── PROOF-PATH.md
+├── PROOF_STATUS.md
+├── PAPER-COVERAGE.md
+├── lakefile.toml
+└── lean-toolchain
+```
+
+## Scope
+
+The Lean project formalizes mathematical implications of a precise semantic
+model.  It does not establish that a biological system satisfies those
+assumptions, nor does it formalize KaSim/NFsim executable semantics, parser
+behavior, software-specific automorphism normalization, or experimental
+identifiability.  Those are separate verification problems.
