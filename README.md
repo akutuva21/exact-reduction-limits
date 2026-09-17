@@ -4,11 +4,9 @@ This repository uses Lean 4 to formalize the mathematical architecture of the
 research note **Local Rules Can Require Nonlocal Coordinates and Infinite-State
 Realizations: Limits of exact reduction in Kappa/BNGL**.
 
-It follows the organization and proof-engineering style of
-[`akutuva21/Rasq`](https://github.com/akutuva21/Rasq): a small umbrella target,
-modular theorem files, a paper-to-proof map, an explicit proof-status boundary,
-an ELI15 explanation, cheap structural checks, and a pinned Lean/Mathlib CI
-build.
+It is organized as a small umbrella target with modular theorem files, a
+paper-to-proof map, an explicit proof-status boundary, an ELI10 explanation,
+cheap structural checks, and a pinned Lean/Mathlib CI build.
 
 The central distinction is the same one made in the paper:
 
@@ -88,12 +86,12 @@ having different remaining distances.
 
 The Done-time survival law at remaining distance `r` is
 
-\[
-S_r(t)=e^{-\kappa t}\sum_{j=0}^{r-1}\frac{(\kappa t)^j}{j!}.
-\]
+$$
+S_r(t) = e^{-\kappa t} \sum_{j=0}^{r-1} \frac{(\kappa t)^j}{j!}
+$$
 
 Lean proves that consecutive orders differ by a strictly positive term for
-`κ,t>0`, so the two locally indistinguishable restart states have different
+$\kappa, t > 0$, so the two locally indistinguishable restart states have different
 future assay marginals.
 
 ### Scanner seed: reusable reduction and one-seed realization differ
@@ -101,19 +99,15 @@ future assay marginals.
 From the designated build/freeze seed, first-event conditioning gives the
 bounded recurrence
 
-\[
-F_n=uF_{n+1}+vw^n,
-\qquad
-F_n=\frac{vw^n}{1-uw}.
-\]
+$$
+F_n = u F_{n+1} + v w^n, \quad F_n = \frac{v w^n}{1 - u w}
+$$
 
 At `n=1`, Lean simplifies this to
 
-\[
-\mathbb E[e^{-sT}]
-=\frac{\lambda_s\kappa}
-{s^2+(\lambda_b+\lambda_s+\kappa)s+\lambda_s\kappa}
-\]
+$$
+\mathbb{E}[e^{-sT}] = \frac{\lambda_s \kappa}{s^2 + (\lambda_b + \lambda_s + \kappa)s + \lambda_s \kappa}
+$$
 
 and proves that the denominator factors into two positive phase rates under the
 physical rate assumptions.  This is the transform-level core of the exact
@@ -123,20 +117,17 @@ three-state hidden CTMC realization.
 
 The unique active tip gives the birth-death length process
 
-\[
-r\to r+1\text{ at }\lambda,
-\qquad
-r\to r-1\text{ at }\mu,
-\]
+$$
+r \to r+1 \text{ at } \lambda, \quad r \to r-1 \text{ at } \mu
+$$
 
-with `μ>λ`.  Lean proves that the paper's candidate transform
+with $\mu > \lambda$.  Lean proves that the paper's candidate transform
 
-\[
-\rho(s)=\frac{s+\lambda+\mu-
-\sqrt{(s+\lambda+\mu)^2-4\lambda\mu}}{2\lambda}
-\]
+$$
+\rho(s) = \frac{s + \lambda + \mu - \sqrt{(s + \lambda + \mu)^2 - 4 \lambda \mu}}{2 \lambda}
+$$
 
-satisfies the characteristic quadratic and has `ρ(0)=1`.  The classical fact
+satisfies the characteristic quadratic and has $\rho(0)=1$.  The classical fact
 that this square-root transform is non-rational is an explicit background
 input.  The repository then proves the exact logical implication: because every
 finite-dimensional time-homogeneous linear realization has rational Laplace
@@ -169,8 +160,7 @@ for the reusable reduction.
 
 ## Build
 
-The project is pinned to Lean **4.31.0** and Mathlib **v4.31.0**, matching the
-current Rasq repository.
+The project is pinned to Lean **4.31.0** and Mathlib **v4.31.0**.
 
 ```bash
 python3 tools/prelint.py
@@ -179,7 +169,7 @@ python3 tools/check_practical.py
 lake build
 ```
 
-The first two commands are cheap structural checks.  Only `lake build` is a Lean
+The first three commands are cheap structural checks.  Only `lake build` is a Lean
 kernel check.
 
 ## Verification status
@@ -201,9 +191,8 @@ inferring verification from file presence.
   -> status.
 - [`PROOF_STATUS.md`](PROOF_STATUS.md): what is proved internally, what is an
   explicit classical interface, and what still requires a kernel build.
-- [`ELI15.md`](ELI15.md): plain-language interpretation of the paper.
-- [`ELI10-PRACTICAL.md`](ELI10-PRACTICAL.md): child-level explanation of the
-  constructive extension.
+- [`ELI10-PRACTICAL.md`](ELI10-PRACTICAL.md): ELI10-level explanation of the
+  paper and the constructive extension.
 - [`PRACTICAL-FRAMEWORK.md`](PRACTICAL-FRAMEWORK.md): exact contracts and the
   intended BioNetGen-facing workflow.
 - [`CHANGES-PRACTICAL.md`](CHANGES-PRACTICAL.md): concise file-by-file summary
@@ -249,7 +238,6 @@ inferring verification from file presence.
 │   └── check_practical.py
 ├── .github/workflows/lean.yml
 ├── README.md
-├── ELI15.md
 ├── ELI10-PRACTICAL.md
 ├── PRACTICAL-FRAMEWORK.md
 ├── PROOF-PATH.md
